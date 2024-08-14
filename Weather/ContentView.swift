@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var isNight = false
     var body: some View {
         ZStack {
-            Backgroundview(isNight: $isNight)
+            Backgroundview(isNight: isNight) // removed binding becuase we do not need it
             VStack{
                 CityTextView(CityName: "Cupertino, CA")
                 MainTempView(imageName: isNight ? "moon.stars.fill" : "cloud.sun.fill", temperature: 77  )
@@ -72,14 +72,16 @@ struct WeatherDayView: View {
 }
 
 struct  Backgroundview: View {
-    @Binding var isNight: Bool
+    var isNight: Bool // removed binding becuase we do not need it
     
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [isNight ? .black : .blue, isNight ? .gray : Color("lightBlue")]), startPoint: .topLeading,
-                       endPoint: .bottomTrailing)
-        .edgesIgnoringSafeArea(.all )
+//        LinearGradient(gradient: Gradient(colors: [isNight ? .black : .blue, isNight ? .gray : Color("lightBlue")]), startPoint: .topLeading,
+//                       endPoint: .bottomTrailing)
+//        .edgesIgnoringSafeArea(.all )
+        ContainerRelativeShape().fill(isNight ? Color.black.gradient : Color.blue.gradient).ignoresSafeArea()
+        }
     }
-}
+
 struct CityTextView: View {
     var CityName: String
     var body: some View {
@@ -95,7 +97,7 @@ struct MainTempView: View {
     var body: some View {
         VStack(spacing: 8){
             Image(systemName: imageName)
-                .renderingMode(.original)
+                .symbolRenderingMode(.multicolor)
                 .resizable()
                 .aspectRatio(contentMode: .fill )
                 .frame(width: 180, height: 180
